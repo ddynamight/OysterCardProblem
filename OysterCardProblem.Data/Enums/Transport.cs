@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OysterCardProblem.Data.Entities
+namespace OysterCardProblem.Data.Enums
 {
-    public class User
-    {
-        
-    }
+     public enum Transport
+     {
+          BUS,
+          TUBE
+     }
 }
