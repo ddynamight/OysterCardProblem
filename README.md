@@ -1,5 +1,5 @@
 # OysterCardProblem
-This is the Oyster Card Problem Challenge
+This is the Oyster Card Problem Challenge built with .NET 5 (Core) and C#
 
 There are three projects in this solution.
 - OysterCardProblem.App (This is the console App)
