@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OysterCardProblem.Data.Enums;
+﻿using OysterCardProblem.Data.Enums;
+using System;
 
 namespace OysterCardProblem.Data.Entities
 {
@@ -15,15 +11,15 @@ namespace OysterCardProblem.Data.Entities
           public const float TWO_ZONES_EXC_ZONE_ONE_FARE = 2.25f;
           public const float THREE_ZONES_FAIR = 3.20f;
           public const float BUS_FARE = 1.80f;
-          public const float BASIC_TUBE_FARE = 3.20f;
+          public const float BASIC_TRAIN_FARE = 3.20f;
 
           public void Validate(Transport transport, Card card)
           {
                if (transport.Equals(Transport.BUS))
                     card.Validate(BUS_FARE);
 
-               if (transport.Equals(Transport.TUBE))
-                    card.Validate(BASIC_TUBE_FARE);
+               if (transport.Equals(Transport.TRAIN))
+                    card.Validate(BASIC_TRAIN_FARE);
           }
 
           public void ChargeMax(Transport transport, Card card)
@@ -31,56 +27,60 @@ namespace OysterCardProblem.Data.Entities
                if (transport.Equals(Transport.BUS))
                     card.Out(BUS_FARE);
 
-               if (transport.Equals(Transport.TUBE))
-                    card.Out(BASIC_TUBE_FARE);
+               if (transport.Equals(Transport.TRAIN))
+                    card.Out(BASIC_TRAIN_FARE);
           }
 
-          public void Charge(Transport transport, Journey journey, Card card)
+          public void Charge(Transport transport, Trip trip, Card card)
           {
-               if (transport.Equals(Transport.TUBE))
+               switch (transport)
                {
-                    int count = CountZones(journey);
+                    case Transport.TRAIN:
+                    {
+                         int count = CountZones(trip);
 
-                    if (IsOneZones(count) && IsZoneTwo(journey))
-                    {
-                         card.In(BASIC_TUBE_FARE - ANY_ZONE_OUTSIDE_ZONE_ONE_FARE);
+                         if (IsOneZones(count) && IsZoneTwo(trip))
+                         {
+                              card.In(BASIC_TRAIN_FARE - ANY_ZONE_OUTSIDE_ZONE_ONE_FARE);
+                         }
+                         else if (HaveZoneOne(trip) && IsOneZones(count))
+                         {
+                              card.In(BASIC_TRAIN_FARE - ZONE_ONE_FARE);
+                         }
+                         else if (!HaveZoneOne(trip) && IsOneZones(count))
+                         {
+                              card.In(BASIC_TRAIN_FARE - ANY_ZONE_OUTSIDE_ZONE_ONE_FARE);
+                         }
+                         else if (HaveZoneOne(trip) && IsTwoZones(count))
+                         {
+                              card.In(BASIC_TRAIN_FARE - TWO_ZONES_INC_ZONE_ONE_FARE);
+                         }
+                         else if (!HaveZoneOne(trip) && IsTwoZones(count))
+                         {
+                              card.In(BASIC_TRAIN_FARE - TWO_ZONES_EXC_ZONE_ONE_FARE);
+                         }
+                         else if (IsThreeZones(count))
+                         {
+                              card.In(BASIC_TRAIN_FARE - THREE_ZONES_FAIR);
+                         }
+
+                         break;
                     }
-                    else if (HaveZoneOne(journey) && IsOneZones(count))
-                    {
-                         card.In(BASIC_TUBE_FARE - ZONE_ONE_FARE);
-                    }
-                    else if (!HaveZoneOne(journey) && IsOneZones(count))
-                    {
-                         card.In(BASIC_TUBE_FARE - ANY_ZONE_OUTSIDE_ZONE_ONE_FARE);
-                    }
-                    else if (HaveZoneOne(journey) && IsTwoZones(count))
-                    {
-                         card.In(BASIC_TUBE_FARE - TWO_ZONES_INC_ZONE_ONE_FARE);
-                    }
-                    else if (!HaveZoneOne(journey) && IsTwoZones(count))
-                    {
-                         card.In(BASIC_TUBE_FARE - TWO_ZONES_EXC_ZONE_ONE_FARE);
-                    }
-                    else if (IsThreeZones(count))
-                    {
-                         card.In(BASIC_TUBE_FARE - THREE_ZONES_FAIR);
-                    }
-               }
-               else if (transport.Equals(Transport.BUS))
-               {
-                    card.In(0f);
+                    case Transport.BUS:
+                         card.In(0f);
+                         break;
                }
           }
 
-          private bool IsZoneTwo(Journey journey)
+          private bool IsZoneTwo(Trip trip)
           {
-               return journey.GetEndPoint().GetZone().Contains("2") && journey.GetStartPoint().GetZone().Contains("2");
+               return trip.GetEndPoint().GetZone().Contains("2") && trip.GetStartPoint().GetZone().Contains("2");
           }
 
-          private int CountZones(Journey journey)
+          private int CountZones(Trip trip)
           {
-               var zonesStart = journey.GetStartPoint().GetZone().Split(',');
-               var zonesEnd = journey.GetEndPoint().GetZone().Split(',');
+               var zonesStart = trip.GetStartPoint().GetZone().Split(',');
+               var zonesEnd = trip.GetEndPoint().GetZone().Split(',');
 
                int x = 10;
 
@@ -114,9 +114,9 @@ namespace OysterCardProblem.Data.Entities
                return count == 0;
           }
 
-          private bool HaveZoneOne(Journey journey)
+          private bool HaveZoneOne(Trip trip)
           {
-               return journey.GetEndPoint().GetZone().Contains("1") || journey.GetStartPoint().GetZone().Contains("1");
+               return trip.GetEndPoint().GetZone().Contains("1") || trip.GetStartPoint().GetZone().Contains("1");
           }
      }
 }

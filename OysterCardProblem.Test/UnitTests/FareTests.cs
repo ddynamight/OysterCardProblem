@@ -10,7 +10,7 @@ namespace OysterCardProblem.Test.UnitTests
      {
           [TestMethod]
           [ExpectedException(typeof(FareException), "You don't have enough balance!")]
-          public void TestValidadeBusException()
+          public void ShouldThrowValidateBusFareException()
           {
                Card card = new Card(Fare.BUS_FARE - 1f);
                Fare fare = new Fare();
@@ -19,25 +19,25 @@ namespace OysterCardProblem.Test.UnitTests
 
           [TestMethod]
           [ExpectedException(typeof(FareException), "You don't have enough balance!")]
-          public void TestValidateTubeFareException()
+          public void ShouldValidateTrainFareException()
           {
 
-               Card card = new Card(Fare.BASIC_TUBE_FARE - 1f);
+               Card card = new Card(Fare.BASIC_TRAIN_FARE - 1f);
                Fare fare = new Fare();
-               fare.Validate(Transport.TUBE, card);
+               fare.Validate(Transport.TRAIN, card);
           }
 
           [TestMethod]
-          public void TestChargeMaxTube()
+          public void TestChargeMaxTrain()
           {
-               Card card = new Card(Fare.BASIC_TUBE_FARE);
+               Card card = new Card(Fare.BASIC_TRAIN_FARE);
                Fare fare = new Fare();
-               fare.ChargeMax(Transport.TUBE, card);
+               fare.ChargeMax(Transport.TRAIN, card);
                Assert.AreEqual(0f, card.GetBalance());
           }
 
           [TestMethod]
-          public void TestChargeMaxBus()
+          public void ShouldChargeMaxBus()
           {
                Card card = new Card(Fare.BUS_FARE);
                Fare fare = new Fare();
@@ -46,81 +46,81 @@ namespace OysterCardProblem.Test.UnitTests
           }
 
           [TestMethod]
-          public void TestChargeBus()
+          public void ShouldChargeBus()
           {
                Card card = new Card(Fare.BUS_FARE);
                Fare fare = new Fare();
-               Journey jorneyBusEarlToChelsea = new Journey(fare);
-               jorneyBusEarlToChelsea.SetStartPoint(Transport.BUS, null, card);
-               jorneyBusEarlToChelsea.SetEndPoint(null);
-               fare.Charge(Transport.BUS, jorneyBusEarlToChelsea, card);
+               Trip tripBusEarlToChelsea = new Trip(fare);
+               tripBusEarlToChelsea.SetStartPoint(Transport.BUS, null, card);
+               tripBusEarlToChelsea.SetEndPoint(null);
+               fare.Charge(Transport.BUS, tripBusEarlToChelsea, card);
                Assert.AreEqual(0f, card.GetBalance());
           }
 
           [TestMethod]
-          public void TestChargeTubeZoneOne()
+          public void ShouldChargeTrainZoneOne()
           {
-               Card card = new Card(Fare.BASIC_TUBE_FARE);
+               Card card = new Card(Fare.BASIC_TRAIN_FARE);
                Fare fare = new Fare();
-               Journey jorneyBusEarlToChelsea = new Journey(fare);
-               jorneyBusEarlToChelsea.SetStartPoint(Transport.TUBE, new StationZone(Station.Holborn), card);
-               jorneyBusEarlToChelsea.SetEndPoint(new StationZone(Station.EarlsCourt));
-               Assert.AreEqual(Fare.BASIC_TUBE_FARE - Fare.ZONE_ONE_FARE, card.GetBalance());
+               Trip tripBusEarlToChelsea = new Trip(fare);
+               tripBusEarlToChelsea.SetStartPoint(Transport.TRAIN, new StationZone(Station.Holborn), card);
+               tripBusEarlToChelsea.SetEndPoint(new StationZone(Station.EarlsCourt));
+               Assert.AreEqual(Fare.BASIC_TRAIN_FARE - Fare.ZONE_ONE_FARE, card.GetBalance());
           }
 
           [TestMethod]
-          public void TestChargeTubeAnyZoneOutSideZoneOne()
+          public void ShouldChargeTrainAnyZoneOutSideZoneOne()
           {
-               Card card = new Card(Fare.BASIC_TUBE_FARE);
+               Card card = new Card(Fare.BASIC_TRAIN_FARE);
                Fare fare = new Fare();
-               Journey jorneyBusEarlToChelsea = new Journey(fare);
-               jorneyBusEarlToChelsea.SetStartPoint(Transport.TUBE, new StationZone(Station.Hammersmith), card);
-               jorneyBusEarlToChelsea.SetEndPoint(new StationZone(Station.EarlsCourt));
-               Assert.AreEqual(Fare.BASIC_TUBE_FARE - Fare.ANY_ZONE_OUTSIDE_ZONE_ONE_FARE, card.GetBalance());
+               Trip tripBusEarlToChelsea = new Trip(fare);
+               tripBusEarlToChelsea.SetStartPoint(Transport.TRAIN, new StationZone(Station.Hammersmith), card);
+               tripBusEarlToChelsea.SetEndPoint(new StationZone(Station.EarlsCourt));
+               Assert.AreEqual(Fare.BASIC_TRAIN_FARE - Fare.ANY_ZONE_OUTSIDE_ZONE_ONE_FARE, card.GetBalance());
           }
 
           [TestMethod]
-          public void TestChargeTubeTwoInZoneOne()
+          public void ShouldChargeTrainTwoInZoneOne()
           {
-               Card card = new Card(Fare.BASIC_TUBE_FARE);
+               Card card = new Card(Fare.BASIC_TRAIN_FARE);
                Fare fare = new Fare();
-               Journey jorneyBusEarlToChelsea = new Journey(fare);
-               jorneyBusEarlToChelsea.SetStartPoint(Transport.TUBE, new StationZone(Station.Hammersmith), card);
-               jorneyBusEarlToChelsea.SetEndPoint(new StationZone(Station.Holborn));
-               Assert.AreEqual(Fare.BASIC_TUBE_FARE - Fare.TWO_ZONES_INC_ZONE_ONE_FARE, card.GetBalance());
+               Trip tripBusEarlToChelsea = new Trip(fare);
+               tripBusEarlToChelsea.SetStartPoint(Transport.TRAIN, new StationZone(Station.Hammersmith), card);
+               tripBusEarlToChelsea.SetEndPoint(new StationZone(Station.Holborn));
+               Assert.AreEqual(Fare.BASIC_TRAIN_FARE - Fare.TWO_ZONES_INC_ZONE_ONE_FARE, card.GetBalance());
           }
 
           [TestMethod]
-          public void TestChargeTubeTwoExcludingZoneOne()
+          public void ShouldChargeTrainTwoExcludingZoneOne()
           {
-               Card card = new Card(Fare.BASIC_TUBE_FARE);
+               Card card = new Card(Fare.BASIC_TRAIN_FARE);
                Fare fare = new Fare();
-               Journey jorneyBusEarlToChelsea = new Journey(fare);
-               jorneyBusEarlToChelsea.SetStartPoint(Transport.TUBE, new StationZone(Station.Hammersmith), card);
-               jorneyBusEarlToChelsea.SetEndPoint(new StationZone(Station.Wimbledon));
-               Assert.AreEqual(Fare.BASIC_TUBE_FARE - Fare.TWO_ZONES_EXC_ZONE_ONE_FARE, card.GetBalance());
+               Trip tripBusEarlToChelsea = new Trip(fare);
+               tripBusEarlToChelsea.SetStartPoint(Transport.TRAIN, new StationZone(Station.Hammersmith), card);
+               tripBusEarlToChelsea.SetEndPoint(new StationZone(Station.Wimbledon));
+               Assert.AreEqual(Fare.BASIC_TRAIN_FARE - Fare.TWO_ZONES_EXC_ZONE_ONE_FARE, card.GetBalance());
           }
 
           [TestMethod]
-          public void TestChargeTubeThreeZones()
+          public void ShouldChargeTrainThreeZones()
           {
-               Card card = new Card(Fare.BASIC_TUBE_FARE);
+               Card card = new Card(Fare.BASIC_TRAIN_FARE);
                Fare fare = new Fare();
-               Journey jorneyBusEarlToChelsea = new Journey(fare);
-               jorneyBusEarlToChelsea.SetStartPoint(Transport.TUBE, new StationZone(Station.Holborn), card);
-               jorneyBusEarlToChelsea.SetEndPoint(new StationZone(Station.Wimbledon));
-               Assert.AreEqual(Fare.BASIC_TUBE_FARE - Fare.THREE_ZONES_FAIR, card.GetBalance());
+               Trip tripBusEarlToChelsea = new Trip(fare);
+               tripBusEarlToChelsea.SetStartPoint(Transport.TRAIN, new StationZone(Station.Holborn), card);
+               tripBusEarlToChelsea.SetEndPoint(new StationZone(Station.Wimbledon));
+               Assert.AreEqual(Fare.BASIC_TRAIN_FARE - Fare.THREE_ZONES_FAIR, card.GetBalance());
           }
 
           [TestMethod]
-          public void Test1()
+          public void ShouldCheckBalanceAfterTrip()
           {
-               Card card = new Card(Fare.BASIC_TUBE_FARE);
+               Card card = new Card(Fare.BASIC_TRAIN_FARE);
                Fare fare = new Fare();
-               Journey journeyBusEarlToChelsea = new Journey(fare);
-               journeyBusEarlToChelsea.SetStartPoint(Transport.TUBE, new StationZone(Station.Holborn), card);
-               journeyBusEarlToChelsea.SetEndPoint(new StationZone(Station.Wimbledon));
-               Assert.AreEqual(Fare.BASIC_TUBE_FARE - Fare.THREE_ZONES_FAIR, card.GetBalance());
+               Trip tripBusEarlToChelsea = new Trip(fare);
+               tripBusEarlToChelsea.SetStartPoint(Transport.TRAIN, new StationZone(Station.Holborn), card);
+               tripBusEarlToChelsea.SetEndPoint(new StationZone(Station.Wimbledon));
+               Assert.AreEqual(Fare.BASIC_TRAIN_FARE - Fare.THREE_ZONES_FAIR, card.GetBalance());
           }
      }
 }

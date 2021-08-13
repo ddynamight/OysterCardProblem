@@ -9,7 +9,7 @@ namespace OysterCardProblem.Test.UnitTests
      {
           [TestMethod]
           [ExpectedException(typeof(FareException), "You don't have enough balance!")]
-          public void TestValidateExeption()
+          public void ShouldThrowValidateException()
           {
                Card card = new Card(30f);
                card.Validate(31);
@@ -17,7 +17,7 @@ namespace OysterCardProblem.Test.UnitTests
 
           [TestMethod]
           [ExpectedException(typeof(FareException), "You don't have enough balance!")]
-          public void TestOutException()
+          public void ShouldThrowOutException()
           {
                Card card = new Card(30f);
                card.Out(31);

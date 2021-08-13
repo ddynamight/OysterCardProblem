@@ -9,26 +9,29 @@ namespace OysterCardProblem.App
           static void Main(string[] args)
           {
                Card card = new Card();
-               Console.WriteLine("Loading a card with £30 \n");
+               card.Name = "Duran Ismail";
+               Console.WriteLine("Recharging a card with £30 \n");
                card.AddMoney(30);
 
-               Journey journeyHolbornToCourt = new Journey(new Fare());
-               journeyHolbornToCourt.SetStartPoint(Transport.TUBE, new StationZone(Station.Holborn), card);
-               journeyHolbornToCourt.SetEndPoint(new StationZone(Station.EarlsCourt));
+               Console.WriteLine($"Hello {card.Name}, Your Balance for Card with ID {card.Id} now is {card.GetBalance()} \n");
 
-               Console.WriteLine($"Card Balance after first journey (Tube Holborn to Earl’s Court)  is £{card.GetBalance()} \n");
+               Trip tripHolbornToCourt = new Trip(new Fare());
+               tripHolbornToCourt.SetStartPoint(Transport.TRAIN, new StationZone(Station.Holborn), card);
+               tripHolbornToCourt.SetEndPoint(new StationZone(Station.EarlsCourt));
 
-               Journey journeyBusEarlToChelsea = new Journey(new Fare());
-               journeyBusEarlToChelsea.SetStartPoint(Transport.BUS, null, card);
-               journeyBusEarlToChelsea.SetEndPoint(null);
+               Console.WriteLine($"Hi {card.Name}, Your card balance after first trip (Train Holborn to Earl’s Court)  is £{card.GetBalance()} \n");
 
-               Console.WriteLine($"Card Balance after second journey (328 bus from Earl’s Court to Chelsea) is £{card.GetBalance()} \n");
+               Trip tripBusEarlToChelsea = new Trip(new Fare());
+               tripBusEarlToChelsea.SetStartPoint(Transport.BUS, null, card);
+               tripBusEarlToChelsea.SetEndPoint(null);
 
-               Journey journeyEarlsToHammersmith = new Journey(new Fare());
-               journeyEarlsToHammersmith.SetStartPoint(Transport.TUBE, new StationZone(Station.EarlsCourt), card);
-               journeyEarlsToHammersmith.SetEndPoint(new StationZone(Station.Hammersmith));
+               Console.WriteLine($"Hi {card.Name}, Your card balance after second trip (328 bus from Earl’s Court to Chelsea) is £{card.GetBalance()} \n");
 
-               Console.WriteLine($"Card Balance after third journey (Tube Earl’s court to Hammersmith) is £{card.GetBalance()} \n");
+               Trip tripEarlsToHammersmith = new Trip(new Fare());
+               tripEarlsToHammersmith.SetStartPoint(Transport.TRAIN, new StationZone(Station.EarlsCourt), card);
+               tripEarlsToHammersmith.SetEndPoint(new StationZone(Station.Hammersmith));
+
+               Console.WriteLine($"Hi {card.Name}, Your card balance after third trip (Train Earl’s court to Hammersmith) is £{card.GetBalance()} \n");
                Console.ReadLine();
           }
      }

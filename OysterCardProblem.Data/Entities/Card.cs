@@ -1,10 +1,15 @@
-﻿using OysterCardProblem.Data.Exceptions;
+﻿using System;
+using OysterCardProblem.Data.Exceptions;
 
 namespace OysterCardProblem.Data.Entities
 {
      public class Card
      {
           private float _balance;
+
+          public Guid Id { get; set; } = Guid.NewGuid();
+          public string Name { get; set; } = "Ismail Umar";
+          public string PhoneNumber { get; set; } = "08035848681";
 
           public Card(float balance)
           {

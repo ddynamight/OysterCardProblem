@@ -4,7 +4,7 @@ using System;
 
 namespace OysterCardProblem.Data.Entities
 {
-     public class Journey
+     public class Trip
      {
           private StationZone _startPoint;
           private StationZone _endPoint;
@@ -13,7 +13,7 @@ namespace OysterCardProblem.Data.Entities
           private Card _card;
           private Fare _fare;
 
-          public Journey(Fare fare)
+          public Trip(Fare fare)
           {
                _fare = fare;
           }
